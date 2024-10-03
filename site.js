@@ -52,17 +52,23 @@ function buildMain() {
   const queryParts = array[1].split("&");
   const offset = queryParts.find( (line) => line.includes("offset")).split("=")[1];
   const count = queryParts.find( (line) => line.includes("count")).split("=")[1];
-  
-  let animalText = "";
-  for (let i = 0; i < count; i++) {
-    animalText += buildAnimalCard(animals[i]);
+  let errorState = false;
+  if (count + offset > 5 || count < 0 || offset < 0)
+    errorState = true;
+
+  console.log(errorState);
+  let animalText = renderError(errorState);
+  if (errorState) {
+    for (let i = 0; i < count; i++) {
+      animalText += buildAnimalCard(animals[i]);
+    }
   }
 
   return `<article id="page-container">${buildLeftNav()}<section class="main-container"><main><h1>Hello Class</h1><article class="card-container">${animalText}</article></main></section></article>`
 }
 
-function renderError() {
-
+function renderError(state) {
+  return errorState
 }
 
 function buildFooter() {
